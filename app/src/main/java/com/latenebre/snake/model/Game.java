@@ -1,7 +1,5 @@
 package com.latenebre.snake.model;
 
-import android.graphics.Rect;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

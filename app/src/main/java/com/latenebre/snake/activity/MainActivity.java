@@ -14,7 +14,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        View play = findViewById(R.id.playTextView);
+        View play = findViewById(R.id.main_tv_play);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -22,14 +22,15 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        View highScores = findViewById(R.id.highScorestextView);
+        View highScores = findViewById(R.id.main_tv_highscores);
         highScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO implement
+                Intent intent = new Intent(MainActivity.this, HighscoresActivity.class);
+                startActivity(intent);
             }
         });
-        View exit = findViewById(R.id.exitTextView);
+        View exit = findViewById(R.id.main_tv_edit);
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

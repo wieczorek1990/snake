@@ -4,7 +4,6 @@ import com.latenebre.snake.model.Direction;
 import com.latenebre.snake.model.Game;
 import com.latenebre.snake.model.Point;
 
-import android.graphics.Rect;
 import android.graphics.RectF;
 
 import java.util.ArrayList;

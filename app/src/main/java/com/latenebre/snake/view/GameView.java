@@ -2,6 +2,7 @@ package com.latenebre.snake.view;
 
 import com.latenebre.snake.controller.GameController;
 import com.latenebre.snake.model.Direction;
+import com.latenebre.snake.model.Highscores;
 
 import android.app.Activity;
 import android.content.Context;
@@ -47,7 +48,7 @@ public class GameView extends View {
 
     boolean isEnded;
 
-    boolean isEndedTouchDownSetUp;
+    boolean isEndingDone;
 
     public GameView(Context context, int width, int height) {
         super(context);
@@ -82,7 +83,7 @@ public class GameView extends View {
         this.paintText.setTextSize(256);
         this.lastOnDrawTime = -1;
         this.isEnded = false;
-        this.isEndedTouchDownSetUp = false;
+        this.isEndingDone = false;
         this.textBounds = new Rect();
     }
 
@@ -134,15 +135,16 @@ public class GameView extends View {
         // End
         if (isEnded) {
             canvas.drawRect(gameController.getRedHead(), paintRed);
+            int points = gameController.getPoints();
             String end = "End.";
-            String points = "Score: " + gameController.getPoints();
+            String score = "Score: " + points;
             int width = screenWidth / 2;
             int height = screenHeight / 2;
             float lineHeight = getLineHeight(paintText);
             drawTextCentred(canvas, end, width, height - lineHeight / 2);
-            drawTextCentred(canvas, points, width, height + lineHeight / 2);
-            if (!isEndedTouchDownSetUp) {
-                isEndedTouchDownSetUp = true;
+            drawTextCentred(canvas, score, width, height + lineHeight / 2);
+            if (!isEndingDone) {
+                isEndingDone = true;
                 this.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -150,10 +152,18 @@ public class GameView extends View {
                         return true;
                     }
                 });
+                updateHighscores(points);
             }
         }
 
         invalidate();
+    }
+
+    private void updateHighscores(int points) {
+        Highscores highscores = new Highscores();
+        highscores.load(getContext());
+        highscores.update(points);
+        highscores.save(getContext());
     }
 
     private float getLineHeight(Paint paint) {

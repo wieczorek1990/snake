@@ -9,8 +9,8 @@ import android.view.View;
  */
 public class U {
 
-    public static void d(String message) {
-        Log.d("debug", message);
+    public static void v(String message) {
+        Log.v("luke", message);
     }
 
     public static void setImmersive(boolean hasFocus, Activity activity) {

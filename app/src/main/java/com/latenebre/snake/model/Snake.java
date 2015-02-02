@@ -10,15 +10,19 @@ public class Snake {
 
     List<Segment> segments;
 
-    public Segment getRedHead() {
-        return redHead;
-    }
-
     private Segment redHead;
 
     public Snake() {
         segments = new ArrayList<>();
         segments.add(new Segment(1, 1));
+    }
+
+    public Segment getRedHead() {
+        return redHead;
+    }
+
+    public void setRedHead(Segment redHead) {
+        this.redHead = redHead;
     }
 
     public Segment getNext(Direction direction) {
@@ -74,9 +78,5 @@ public class Snake {
     public void move(Segment head) {
         segments.remove(segments.size() - 1);
         segments.add(0, head);
-    }
-
-    public void setRedHead(Segment redHead) {
-        this.redHead = redHead;
     }
 }

@@ -9,6 +9,7 @@
                 tools:context=".MainActivity">
 
     <LinearLayout
+            android:id="@+id/highscores_ll_highscores"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentEnd="true"
@@ -16,35 +17,25 @@
             android:orientation="vertical">
 
         <TextView
-                android:id="@+id/main_tv_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/text_margin"
-                android:text="@string/play"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:typeface="monospace"
-                android:textSize="@dimen/menu_text_size"/>
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/highscores"
-                android:id="@+id/main_tv_highscores"
-                android:layout_gravity="center_horizontal"
-                android:textSize="@dimen/menu_text_size"
-                android:typeface="monospace"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:typeface="monospace"
+                android:textSize="@dimen/menu_text_size"/>
 
         <TextView
-                android:id="@+id/main_tv_edit"
+                android:id="@+id/highscores_tv_highscores"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/text_margin"
-                android:text="@string/exit"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:typeface="monospace"
-                android:textSize="@dimen/menu_text_size"/>
+                android:textSize="@dimen/menu_text_size"
+                android:lines="5"/>
+
     </LinearLayout>
 </RelativeLayout>
