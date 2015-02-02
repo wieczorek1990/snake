@@ -13,8 +13,6 @@ import android.view.Display;
  */
 public class GameActivity extends Activity {
 
-    GameView gameView;
-
     private Point getDimension() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -27,7 +25,7 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Point dimension = getDimension();
-        gameView = new GameView(this, dimension.x, dimension.y);
+        GameView gameView = new GameView(this, dimension.x, dimension.y);
         setContentView(gameView);
     }
 
