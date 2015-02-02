@@ -23,13 +23,15 @@ public class GameView extends View {
 
     static final int FPS = 3;
 
-    private static final float STROKE_WIDTH = 8f;
+    static final float STROKE_WIDTH = 8f;
 
-    private final Rect textBounds = new Rect();
+    Rect textBounds;
+
+    Paint paintRed;
 
     GameController gameController;
 
-    Paint paintDefault;
+    Paint paintBlack;
 
     Paint paintSecondary;
 
@@ -64,8 +66,10 @@ public class GameView extends View {
                 return true;
             }
         });
-        this.paintDefault = new Paint();
-        this.paintDefault.setColor(Color.BLACK);
+        this.paintBlack = new Paint();
+        this.paintBlack.setColor(Color.BLACK);
+        this.paintRed = new Paint();
+        this.paintRed.setColor(Color.RED);
         this.paintSecondary = new Paint();
         this.paintSecondary.setStrokeWidth(STROKE_WIDTH);
         this.paintSecondary.setColor(Color.RED);
@@ -79,6 +83,7 @@ public class GameView extends View {
         this.lastOnDrawTime = -1;
         this.isEnded = false;
         this.isEndedTouchDownSetUp = false;
+        this.textBounds = new Rect();
     }
 
     protected void onDraw(Canvas canvas) {
@@ -123,10 +128,12 @@ public class GameView extends View {
         // Snake
         List<RectF> rectangles = gameController.getRectangles();
         for (RectF rectF : rectangles) {
-            canvas.drawRect(rectF, paintDefault);
+            canvas.drawRect(rectF, paintBlack);
         }
 
+        // End
         if (isEnded) {
+            canvas.drawRect(gameController.getRedHead(), paintRed);
             String end = "End.";
             String points = "Score: " + gameController.getPoints();
             int width = screenWidth / 2;

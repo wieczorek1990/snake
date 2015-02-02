@@ -13,8 +13,7 @@ public class Segment extends Point {
         super(point);
     }
 
-    public void moveToNext(Segment segment, int dx, int dy) {
-        x = segment.getX() + dx;
-        y = segment.getY() + dy;
+    public static Segment move(Segment segment, int dx, int dy) {
+        return new Segment(segment.getX() + dx, segment.getY() + dy);
     }
 }

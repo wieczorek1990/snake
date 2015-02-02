@@ -21,10 +21,6 @@ public class FutureSegment {
         return collectable;
     }
 
-    public int getPosition() {
-        return position;
-    }
-
     public void step() {
         position += 1;
     }
@@ -33,7 +29,4 @@ public class FutureSegment {
         return position == snakeSize;
     }
 
-    public int getSnakeSize() {
-        return snakeSize;
-    }
 }

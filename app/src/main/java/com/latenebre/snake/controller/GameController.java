@@ -4,6 +4,7 @@ import com.latenebre.snake.model.Direction;
 import com.latenebre.snake.model.Game;
 import com.latenebre.snake.model.Point;
 
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 import java.util.ArrayList;
@@ -57,20 +58,22 @@ public class GameController {
 
     public List<RectF> getRectangles() {
         List<RectF> rectangles = new ArrayList<RectF>();
-
         List<Point> points = new ArrayList<Point>();
         points.addAll(game.getSegments());
         points.add(game.getCollectable());
         for (Point point : points) {
-            float left, top, right, bottom;
-            left = point.getX() * squareSize;
-            top = point.getY() * squareSize;
-            right = left + squareSize;
-            bottom = top + squareSize;
-            rectangles.add(new RectF(left, top, right, bottom));
+            rectangles.add(getRectangle(point));
         }
-
         return rectangles;
+    }
+
+    public RectF getRectangle(Point point) {
+        float left, top, right, bottom;
+        left = point.getX() * squareSize;
+        top = point.getY() * squareSize;
+        right = left + squareSize;
+        bottom = top + squareSize;
+        return new RectF(left, top, right, bottom);
     }
 
     public boolean step() {
@@ -83,5 +86,9 @@ public class GameController {
 
     public int getPoints() {
         return game.getPoints();
+    }
+
+    public RectF getRedHead() {
+        return getRectangle(game.getRedHead());
     }
 }

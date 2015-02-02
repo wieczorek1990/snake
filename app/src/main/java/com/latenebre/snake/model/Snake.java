@@ -10,12 +10,18 @@ public class Snake {
 
     List<Segment> segments;
 
+    public Segment getRedHead() {
+        return redHead;
+    }
+
+    private Segment redHead;
+
     public Snake() {
         segments = new ArrayList<>();
         segments.add(new Segment(1, 1));
     }
 
-    public void moveToNext(Direction direction) {
+    public Segment getNext(Direction direction) {
         int dx = 0, dy = 0;
         switch (direction) {
             case UP:
@@ -33,11 +39,7 @@ public class Snake {
             default:
                 throw new IllegalArgumentException("Wrong direction");
         }
-        Segment firstSegment = getFirstSegment();
-        Segment lastSegment = getLastSegment();
-        lastSegment.moveToNext(firstSegment, dx, dy);
-        segments.remove(lastSegment);
-        segments.add(0, lastSegment);
+        return Segment.move(getFirstSegment(), dx, dy);
     }
 
     public List<Segment> getSegments() {
@@ -69,7 +71,12 @@ public class Snake {
         return segments.get(0);
     }
 
-    public Segment getLastSegment() {
-        return segments.get(segments.size() - 1);
+    public void move(Segment head) {
+        segments.remove(segments.size() - 1);
+        segments.add(0, head);
+    }
+
+    public void setRedHead(Segment redHead) {
+        this.redHead = redHead;
     }
 }

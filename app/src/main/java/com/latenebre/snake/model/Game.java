@@ -1,5 +1,7 @@
 package com.latenebre.snake.model;
 
+import android.graphics.Rect;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -66,10 +68,13 @@ public class Game {
             }
         }
         direction = futureDirection;
-        snake.moveToNext(direction);
-        Segment head = snake.getFirstSegment();
-        if (head.getX() < 0 || head.getX() > maxX || head.getY() < 0 || head.getY() > maxY) {
+        Segment head = snake.getNext(direction);
+        if (head.getX() < 0 || head.getX() >= maxX || head.getY() < 0 || head.getY() >= maxY ||
+                snake.collides(head)) {
+            snake.setRedHead(snake.getFirstSegment());
             isEnded = true;
+        } else {
+            snake.move(head);
         }
         if (snake.eaten(collectable)) {
             points += 1;
@@ -93,5 +98,9 @@ public class Game {
 
     public Collectable getCollectable() {
         return collectable;
+    }
+
+    public Segment getRedHead() {
+        return snake.getRedHead();
     }
 }
