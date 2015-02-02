@@ -1,14 +1,15 @@
 package com.latenebre.snake.activity;
 
+import com.latenebre.snake.R;
+import com.latenebre.snake.util.U;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.latenebre.snake.R;
-import com.latenebre.snake.util.U;
-
 public class MainActivity extends Activity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

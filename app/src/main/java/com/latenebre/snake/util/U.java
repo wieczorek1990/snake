@@ -8,6 +8,7 @@ import android.view.View;
  * Created by luke on 25.01.15.
  */
 public class U {
+
     public static void d(String message) {
         Log.d("debug", message);
     }

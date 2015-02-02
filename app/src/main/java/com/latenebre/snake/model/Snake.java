@@ -1,7 +1,5 @@
 package com.latenebre.snake.model;
 
-import com.latenebre.snake.util.U;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +7,7 @@ import java.util.List;
  * Created by luke on 24.01.15.
  */
 public class Snake {
+
     List<Segment> segments;
 
     public Snake() {
@@ -34,8 +33,8 @@ public class Snake {
             default:
                 throw new IllegalArgumentException("Wrong direction");
         }
-        Segment firstSegment = segments.get(0);
-        Segment lastSegment = segments.get(segments.size() - 1);
+        Segment firstSegment = getFirstSegment();
+        Segment lastSegment = getLastSegment();
         lastSegment.moveToNext(firstSegment, dx, dy);
         segments.remove(lastSegment);
         segments.add(0, lastSegment);
@@ -60,5 +59,17 @@ public class Snake {
             }
         }
         return false;
+    }
+
+    public boolean eaten(Collectable collectable) {
+        return getFirstSegment().equals(collectable);
+    }
+
+    public Segment getFirstSegment() {
+        return segments.get(0);
+    }
+
+    public Segment getLastSegment() {
+        return segments.get(segments.size() - 1);
     }
 }

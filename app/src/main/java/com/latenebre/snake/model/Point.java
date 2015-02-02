@@ -4,7 +4,9 @@ package com.latenebre.snake.model;
  * Created by luke on 25.01.15.
  */
 public class Point {
+
     int x;
+
     int y;
 
     public Point(int x, int y) {

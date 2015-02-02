@@ -1,11 +1,10 @@
 package com.latenebre.snake.model;
 
-import com.latenebre.snake.util.U;
-
 /**
  * Created by luke on 24.01.15.
  */
 public class Segment extends Point {
+
     public Segment(int x, int y) {
         super(x, y);
     }
@@ -15,7 +14,6 @@ public class Segment extends Point {
     }
 
     public void moveToNext(Segment segment, int dx, int dy) {
-        Point old = new Point(segment);
         x = segment.getX() + dx;
         y = segment.getY() + dy;
     }

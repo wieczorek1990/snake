@@ -1,16 +1,18 @@
 package com.latenebre.snake.view;
 
+import com.latenebre.snake.controller.GameController;
+import com.latenebre.snake.model.Direction;
+
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
-
-import com.latenebre.snake.controller.GameController;
-import com.latenebre.snake.model.Direction;
 
 import java.util.List;
 
@@ -18,15 +20,32 @@ import java.util.List;
  * Created by luke on 24.01.15.
  */
 public class GameView extends View {
+
     static final int FPS = 3;
+
     private static final float STROKE_WIDTH = 8f;
+
+    private final Rect textBounds = new Rect();
+
     GameController gameController;
+
     Paint paintDefault;
+
     Paint paintSecondary;
+
     Paint paintSecondaryBold;
+
+    Paint paintText;
+
     long lastOnDrawTime;
+
     int screenWidth;
+
     int screenHeight;
+
+    boolean isEnded;
+
+    boolean isEndedTouchDownSetUp;
 
     public GameView(Context context, int width, int height) {
         super(context);
@@ -53,7 +72,13 @@ public class GameView extends View {
         this.paintSecondary.setPathEffect(new DashPathEffect(new float[]{32, 32}, 5));
         this.paintSecondaryBold = new Paint(paintSecondary);
         this.paintSecondaryBold.setStrokeWidth(paintSecondaryBold.getStrokeWidth() * 2f);
+        this.paintText = new Paint();
+        this.paintText.setColor(Color.BLACK);
+        this.paintText.setStyle(Paint.Style.FILL);
+        this.paintText.setTextSize(256);
         this.lastOnDrawTime = -1;
+        this.isEnded = false;
+        this.isEndedTouchDownSetUp = false;
     }
 
     protected void onDraw(Canvas canvas) {
@@ -69,7 +94,7 @@ public class GameView extends View {
         }
         if (elapsedTime > 1000f / FPS) {
             lastOnDrawTime = nowTime;
-            gameController.step();
+            isEnded = gameController.step();
         }
 
         // Border
@@ -101,6 +126,36 @@ public class GameView extends View {
             canvas.drawRect(rectF, paintDefault);
         }
 
+        if (isEnded) {
+            String end = "End.";
+            String points = "Score: " + gameController.getPoints();
+            int width = screenWidth / 2;
+            int height = screenHeight / 2;
+            float lineHeight = getLineHeight(paintText);
+            drawTextCentred(canvas, end, width, height - lineHeight / 2);
+            drawTextCentred(canvas, points, width, height + lineHeight / 2);
+            if (!isEndedTouchDownSetUp) {
+                isEndedTouchDownSetUp = true;
+                this.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        ((Activity) getContext()).finish();
+                        return true;
+                    }
+                });
+            }
+        }
+
         invalidate();
+    }
+
+    private float getLineHeight(Paint paint) {
+        return paint.descent() - paint.ascent();
+    }
+
+    public void drawTextCentred(Canvas canvas, String text, float cx, float cy) {
+        paintText.getTextBounds(text, 0, text.length(), textBounds);
+        canvas.drawText(text, cx - textBounds.exactCenterX(), cy - textBounds.exactCenterY(),
+                paintText);
     }
 }

@@ -1,10 +1,10 @@
 package com.latenebre.snake.controller;
 
-import android.graphics.RectF;
-
 import com.latenebre.snake.model.Direction;
 import com.latenebre.snake.model.Game;
 import com.latenebre.snake.model.Point;
+
+import android.graphics.RectF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +13,13 @@ import java.util.List;
  * Created by luke on 24.01.15.
  */
 public class GameController {
+
     Game game;
+
     float screenWidth;
+
     float screenHeight;
+
     float squareSize;
 
     public GameController(int screenWidth, int screenHeight) {
@@ -69,11 +73,15 @@ public class GameController {
         return rectangles;
     }
 
-    public void step() {
-        game.step();
+    public boolean step() {
+        return game.step();
     }
 
     public Direction getDirection() {
         return game.getDirection();
+    }
+
+    public int getPoints() {
+        return game.getPoints();
     }
 }

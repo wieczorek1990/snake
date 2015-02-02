@@ -1,17 +1,18 @@
 package com.latenebre.snake.activity;
 
+import com.latenebre.snake.util.U;
+import com.latenebre.snake.view.GameView;
+
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 
-import com.latenebre.snake.util.U;
-import com.latenebre.snake.view.GameView;
-
 /**
  * Created by luke on 24.01.15.
  */
 public class GameActivity extends Activity {
+
     GameView gameView;
 
     private Point getDimension() {

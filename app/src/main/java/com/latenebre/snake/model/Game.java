@@ -1,33 +1,48 @@
 package com.latenebre.snake.model;
 
-import com.latenebre.snake.util.U;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Future;
 
 /**
  * Created by luke on 24.01.15.
  */
 public class Game {
+
     Direction direction;
+
     Direction futureDirection;
+
     Snake snake;
+
     Collectable collectable;
+
     List<FutureSegment> futureSegments;
+
     Random random;
+
     int maxX, maxY;
+
+    boolean isEnded;
+
+    int points;
 
     public Game(int maxX, int maxY) {
         this.maxX = maxX;
         this.maxY = maxY;
-        snake = new Snake();
-        direction = Direction.UP;
-        futureDirection = Direction.UP;
-        random = new Random();
-        futureSegments = new ArrayList<>();
+        this.snake = new Snake();
+        this.direction = Direction.UP;
+        this.futureDirection = Direction.UP;
+        this.random = new Random();
+        this.futureSegments = new ArrayList<>();
+        this.isEnded = false;
+        this.points = 0;
+
         generateRandomCollectable();
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     public Direction getDirection() {
@@ -38,8 +53,10 @@ public class Game {
         this.futureDirection = direction;
     }
 
-    // TODO
-    public void step() {
+    public boolean step() {
+        if (isEnded) {
+            return true;
+        }
         for (FutureSegment futureSegment : futureSegments) {
             futureSegment.step();
             if (futureSegment.readyToAdd()) {
@@ -50,10 +67,16 @@ public class Game {
         }
         direction = futureDirection;
         snake.moveToNext(direction);
-        if (snake.getSegments().get(0).equals(collectable)) {
+        Segment head = snake.getFirstSegment();
+        if (head.getX() < 0 || head.getX() > maxX || head.getY() < 0 || head.getY() > maxY) {
+            isEnded = true;
+        }
+        if (snake.eaten(collectable)) {
+            points += 1;
             futureSegments.add(new FutureSegment(collectable, snake.size()));
             generateRandomCollectable();
         }
+        return false;
     }
 
     private void generateRandomCollectable() {
