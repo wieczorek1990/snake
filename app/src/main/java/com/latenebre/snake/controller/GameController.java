@@ -5,7 +5,6 @@ import android.graphics.RectF;
 import com.latenebre.snake.model.Direction;
 import com.latenebre.snake.model.Game;
 import com.latenebre.snake.model.Point;
-import com.latenebre.snake.model.Segment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class GameController {
             default:
                 throw new IllegalArgumentException("Wrong direction");
         }
-        game.setDirection(newDirection);
+        game.scheduleDirectionChange(newDirection);
     }
 
     public List<RectF> getRectangles() {

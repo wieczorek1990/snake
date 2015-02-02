@@ -17,7 +17,6 @@ public class Snake {
     }
 
     public void moveToNext(Direction direction) {
-        U.d("move to next");
         int dx = 0, dy = 0;
         switch (direction) {
             case UP:
@@ -37,11 +36,9 @@ public class Snake {
         }
         Segment firstSegment = segments.get(0);
         Segment lastSegment = segments.get(segments.size() - 1);
-        U.d("first, x: " + firstSegment.getX() + " y: " + firstSegment.getY());
-        U.d("last, x: " + lastSegment.getX() + " y: " + lastSegment.getY());
         lastSegment.moveToNext(firstSegment, dx, dy);
-        U.d("first, x: " + firstSegment.getX() + " y: " + firstSegment.getY());
-        U.d("last, x: " + lastSegment.getX() + " y: " + lastSegment.getY());
+        segments.remove(lastSegment);
+        segments.add(0, lastSegment);
     }
 
     public List<Segment> getSegments() {
@@ -54,5 +51,14 @@ public class Snake {
 
     public int size() {
         return segments.size();
+    }
+
+    public boolean collides(Point point) {
+        for (Segment segment : segments) {
+            if (segment.equals(point)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

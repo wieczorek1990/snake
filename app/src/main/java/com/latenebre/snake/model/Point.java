@@ -12,6 +12,11 @@ public class Point {
         this.y = y;
     }
 
+    public Point(Point point) {
+        this.x = point.x;
+        this.y = point.y;
+    }
+
     public Point(FutureSegment futureSegment) {
         this.x = futureSegment.getCollectable().getX();
         this.y = futureSegment.getCollectable().getY();
@@ -28,5 +33,10 @@ public class Point {
     @Override
     public boolean equals(Object o) {
         return x == ((Point) o).x && y == ((Point) o).y;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
     }
 }

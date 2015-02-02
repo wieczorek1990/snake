@@ -15,10 +15,8 @@ public class Segment extends Point {
     }
 
     public void moveToNext(Segment segment, int dx, int dy) {
-        U.d("dx: " + dx + " dy: " + dy);
-        U.d("before x: " + x + " y: " + y);
+        Point old = new Point(segment);
         x = segment.getX() + dx;
         y = segment.getY() + dy;
-        U.d("after x: " + x + " y: " + y);
     }
 }

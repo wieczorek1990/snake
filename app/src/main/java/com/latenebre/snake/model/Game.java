@@ -12,6 +12,7 @@ import java.util.concurrent.Future;
  */
 public class Game {
     Direction direction;
+    Direction futureDirection;
     Snake snake;
     Collectable collectable;
     List<FutureSegment> futureSegments;
@@ -23,6 +24,7 @@ public class Game {
         this.maxY = maxY;
         snake = new Snake();
         direction = Direction.UP;
+        futureDirection = Direction.UP;
         random = new Random();
         futureSegments = new ArrayList<>();
         generateRandomCollectable();
@@ -32,36 +34,34 @@ public class Game {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+    public void scheduleDirectionChange(Direction direction) {
+        this.futureDirection = direction;
     }
 
     // TODO
     public void step() {
         for (FutureSegment futureSegment : futureSegments) {
             futureSegment.step();
-            U.d("x: " + futureSegment.getCollectable().getX() +
-            " y: " + futureSegment.getCollectable().getY() +
-            " pos: " + futureSegment.getPosition());
-            if (futureSegment.getPosition() == snake.size()) {
-                U.d("segment added");
+            if (futureSegment.readyToAdd()) {
                 snake.addSegment(futureSegment);
                 futureSegments.remove(futureSegment);
                 break;
             }
         }
+        direction = futureDirection;
         snake.moveToNext(direction);
         if (snake.getSegments().get(0).equals(collectable)) {
-            U.d("collectable");
-            futureSegments.add(new FutureSegment(collectable));
+            futureSegments.add(new FutureSegment(collectable, snake.size()));
             generateRandomCollectable();
         }
     }
 
     private void generateRandomCollectable() {
-        int x = random.nextInt(maxX);
-        int y = random.nextInt(maxY);
-        collectable = new Collectable(x, y);
+        do {
+            int x = random.nextInt(maxX);
+            int y = random.nextInt(maxY);
+            collectable = new Collectable(x, y);
+        } while (snake.collides(collectable));
     }
 
     public List<Segment> getSegments() {
