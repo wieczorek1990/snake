@@ -1,0 +1,3 @@
+let SQUARE_SIDE_SIZE: Int = 32
+let SQUARE_COUNT: Int = 16
+let X_TO_Y_RATIO = 2
