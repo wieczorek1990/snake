@@ -43,9 +43,6 @@ class Snake {
     }
 
     func grow() {
-        // Wywoływane PO advance() w stepOnce().
-        // Dodaje segment na pozycji za obecnym końcem ogona,
-        // czyli tam, gdzie ogon był w poprzednim kroku.
         append()
     }
 

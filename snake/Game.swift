@@ -16,8 +16,8 @@ final class Game {
     }
 
     func setDirection(_ direction: Direction) {
-        // ❗ Blokada odwracania o 180°
         guard direction != snake.direction.opposite() else { return }
+
         snake.direction = direction
     }
 
@@ -34,10 +34,8 @@ final class Game {
     }
 
     private func stepOnce() {
-        // Oblicz następną pozycję głowy
         let nextHead = Square.ahead(snake.head, snake.direction)
 
-        // Sprawdź kolizję ze ścianą PRZED ruchem
         for bs in border.borderSquares {
             if bs.x == nextHead.x && bs.y == nextHead.y {
                 running = false
@@ -45,8 +43,6 @@ final class Game {
             }
         }
 
-        // Sprawdź kolizję z ciałem PRZED ruchem
-        // (pomijamy ostatni segment ogona — on przesunie się dalej)
         for part in snake.parts.dropLast() {
             if part.x == nextHead.x && part.y == nextHead.y {
                 running = false
@@ -54,7 +50,6 @@ final class Game {
             }
         }
 
-        // Dopiero teraz wykonaj ruch
         snake.advance()
 
         if snake.headIntersects(apple) {

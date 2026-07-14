@@ -58,20 +58,17 @@ class Apple: Square {
         super.init(x: x, y: y)
     }
 
-    // Place the apple at a random position inside the border that does not overlap the snake
     func respawn(avoiding snake: Snake, within border: Border) {
         var rng = RandomNumberGenerator.generator
-        // Playable area excludes the outermost border walls: [1 ..< xMax-1] x [1 ..< yMax-1]
+
         let xMax = SQUARE_COUNT * X_TO_Y_RATIO
         let yMax = SQUARE_COUNT
 
-        // Build a set of occupied coordinates by the snake
         var occupied = Set<String>()
         for part in snake.parts {
             occupied.insert("\(part.x),\(part.y)")
         }
 
-        // Try a reasonable number of times to find a free spot
         for _ in 0..<100 {
             let newX = Int(rng.nextUnsignedInteger(xMax - 2)) + 1
             let newY = Int(rng.nextUnsignedInteger(yMax - 2)) + 1
@@ -83,7 +80,6 @@ class Apple: Square {
             }
         }
 
-        // Fallback: scan deterministically for a free cell
         for newX in 1..<(xMax - 1) {
             for newY in 1..<(yMax - 1) {
                 let key = "\(newX),\(newY)"
@@ -94,7 +90,6 @@ class Apple: Square {
                 }
             }
         }
-        // If no space is available (snake fills the board), leave position unchanged
     }
 }
 
