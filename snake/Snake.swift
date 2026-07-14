@@ -1,6 +1,7 @@
 class Snake {
     var parts: [SnakePart]
     var head: SnakeHead { parts[0] as! SnakeHead }
+    var direction: Direction = .right
 
     init() {
         parts = [
@@ -62,5 +63,21 @@ class Snake {
             }
         }
         return false
+    }
+
+    func advance() {
+        move(direction)
+    }
+
+    func grow() {
+        append()
+    }
+
+    func selfCollision() -> Bool {
+        return touchedSelf()
+    }
+
+    func headIntersects(_ apple: Apple) -> Bool {
+        return head.x == apple.x && head.y == apple.y
     }
 }

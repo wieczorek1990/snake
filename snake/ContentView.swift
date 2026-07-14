@@ -7,63 +7,48 @@ struct ContentView: View {
 
     // Time ticks.
     let startDate: Date = Date.now
-    var schedule: PeriodicTimelineSchedule {
-        .periodic(from: startDate, by: (1.0 / 60.0) * 16.0)
-    }
+    var schedule: PeriodicTimelineSchedule { .periodic(from: startDate, by: 1.0 / 60.0) }
 
     // Game logic.
     var game: Game
 
-    init() {
-        let initialSnake: Snake = Snake()
-        let initialApple: Apple = Apple()
-        let initialBorder: Border = Border()
+    @State private var lastTick: Date?
+    @FocusState private var isFocused: Bool
 
+    init() {
+        let initialSnake = Snake()
+        let initialApple = Apple()
+        let initialBorder = Border()
         game = Game(initialSnake, initialApple, initialBorder)
     }
 
     @MainActor
-    private func tick() {
-        game.run()
+    private func tick(now: Date) {
+        let dt = lastTick.map { now.timeIntervalSince($0) } ?? (1.0 / 60.0)
+        lastTick = now
+        // Optionally clamp dt
+        let clampedDT = min(dt, 0.1)
+        game.run(deltaTime: clampedDT)
     }
 
     @ViewBuilder
-    private func timelineContent(context: TimelineViewDefaultContext)
-        -> some View
-    {
-        ZStack {
-            Canvas { (gc: inout GraphicsContext, size: CGSize) in
-                let drawer = Drawer(game)
-                drawer.draw(context: gc, size: size)
-            }
-            .frame(width: CGFloat(width), height: CGFloat(height))
-            .padding()
-            .onChange(of: context.date) { _, _ in
-                tick()
-            }
+    private func timelineContent(context: TimelineViewDefaultContext) -> some View {
+        Canvas { context, size in
+            let drawer = Drawer(game)
+            drawer.draw(context: context, size: size)
         }
-        // Keyboard key presses.
+        .frame(width: CGFloat(width), height: CGFloat(height))
+        .padding()
+        .onChange(of: context.date) { _, newDate in
+            tick(now: newDate)
+        }
         .focusable()
-        .onKeyPress(.upArrow) {
-            game.setDirection(Direction.up)
-            return .handled
-        }
-        .onKeyPress(.downArrow) {
-            game.setDirection(Direction.down)
-            return .handled
-        }
-        .onKeyPress(.leftArrow) {
-            game.setDirection(Direction.left)
-            return .handled
-        }
-        .onKeyPress(.rightArrow) {
-            game.setDirection(Direction.right)
-            return .handled
-        }
-        .onKeyPress(.space) {
-            game.running.toggle()
-            return .handled
-        }
+        .focused($isFocused)
+        .onKeyPress(.upArrow) { game.setDirection(.up); return .handled }
+        .onKeyPress(.downArrow) { game.setDirection(.down); return .handled }
+        .onKeyPress(.leftArrow) { game.setDirection(.left); return .handled }
+        .onKeyPress(.rightArrow) { game.setDirection(.right); return .handled }
+        .onKeyPress(.space) { game.running.toggle(); return .handled }
     }
 
     var body: some View {

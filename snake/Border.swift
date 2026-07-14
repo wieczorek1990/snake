@@ -41,4 +41,16 @@ class Border {
 
         borderSquares = initialBorderSquares
     }
+
+    // Returns true if the snake's head is on any border square
+    func containsCollision(with snake: Snake) -> Bool {
+        let hx = snake.head.x
+        let hy = snake.head.y
+        for bs in borderSquares {
+            if bs.x == hx && bs.y == hy {
+                return true
+            }
+        }
+        return false
+    }
 }
