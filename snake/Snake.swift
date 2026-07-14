@@ -12,57 +12,32 @@ class Snake {
     }
 
     func move(_ direction: Direction) {
+        // Zapamiętaj kierunki PRZED zmianą
         let previousDirections = parts.map { $0.lastDirection }
 
+        // Głowa przyjmuje nowy kierunek
         head.lastDirection = direction
 
-        for index in parts.indices.dropFirst() {
-            parts[index].lastDirection = previousDirections[index - 1]
+        // Każda część ciała przejmuje kierunek swojego poprzednika
+        // (część o indeksie i przejmuje kierunek części i-1 z poprzedniego kroku)
+        for i in 1..<parts.count {
+            parts[i].lastDirection = previousDirections[i - 1]
         }
 
+        // Przesuń wszystkie części zgodnie z ich kierunkiem
         for part in parts {
             part.advancePlain()
         }
     }
 
     func append() {
-        let back = Square.backward(parts.last!, parts.last!.lastDirection)
+        let back = parts.last!
         let part = SnakeTail(
             x: back.x,
             y: back.y,
-            lastDirection: parts.last!.lastDirection
+            lastDirection: back.lastDirection
         )
         parts.append(part)
-    }
-
-    func touchedBorder(_ border: Border, _ direction: Direction) -> Bool {
-        let ahead = Square.ahead(head, direction)
-
-        if ahead.x == 0 {
-            return true
-        }
-        if ahead.y == 0 {
-            return true
-        }
-        if ahead.x == SQUARE_COUNT * X_TO_Y_RATIO - 1 {
-            return true
-        }
-        if ahead.y == SQUARE_COUNT - 1 {
-            return true
-        }
-
-        return false
-    }
-
-    func touchedSelf() -> Bool {
-        for part in parts {
-            if part !== parts.first {
-                if part.x == head.x, part.y == head.y {
-                    return true
-                }
-            }
-        }
-        return false
     }
 
     func advance() {
@@ -70,11 +45,19 @@ class Snake {
     }
 
     func grow() {
+        // Dodaj segment na końcu — pojawi się na pozycji ostatniego
+        // segmentu przed ruchem, więc nie nakłada się na resztę ciała.
         append()
     }
 
     func selfCollision() -> Bool {
-        return touchedSelf()
+        // Sprawdzamy tylko głowę względem reszty ciała
+        for part in parts.dropFirst() {
+            if part.x == head.x, part.y == head.y {
+                return true
+            }
+        }
+        return false
     }
 
     func headIntersects(_ apple: Apple) -> Bool {
