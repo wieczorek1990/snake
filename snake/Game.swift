@@ -16,8 +16,7 @@ final class Game {
     }
 
     func setDirection(_ direction: Direction) {
-        // ❗ Blokada odwracania o 180° — wąż nie może skręcić w stronę,
-        //    z której właśnie nadjeżdża.
+        // ❗ Blokada odwracania o 180°
         guard direction != snake.direction.opposite() else { return }
         snake.direction = direction
     }

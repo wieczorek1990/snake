@@ -1,3 +1,5 @@
+// ─── Snake.swift (ostateczna wersja) ───
+
 class Snake {
     var parts: [SnakePart]
     var head: SnakeHead { parts[0] as! SnakeHead }
@@ -12,30 +14,26 @@ class Snake {
     }
 
     func move(_ direction: Direction) {
-        // Zapamiętaj kierunki PRZED zmianą
         let previousDirections = parts.map { $0.lastDirection }
 
-        // Głowa przyjmuje nowy kierunek
         head.lastDirection = direction
 
-        // Każda część ciała przejmuje kierunek swojego poprzednika
-        // (część o indeksie i przejmuje kierunek części i-1 z poprzedniego kroku)
         for i in 1..<parts.count {
             parts[i].lastDirection = previousDirections[i - 1]
         }
 
-        // Przesuń wszystkie części zgodnie z ich kierunkiem
         for part in parts {
             part.advancePlain()
         }
     }
 
     func append() {
-        let back = parts.last!
+        let tail = parts.last!
+        let back = Square.backward(tail, tail.lastDirection)
         let part = SnakeTail(
             x: back.x,
             y: back.y,
-            lastDirection: back.lastDirection
+            lastDirection: tail.lastDirection
         )
         parts.append(part)
     }
@@ -45,13 +43,13 @@ class Snake {
     }
 
     func grow() {
-        // Dodaj segment na końcu — pojawi się na pozycji ostatniego
-        // segmentu przed ruchem, więc nie nakłada się na resztę ciała.
+        // Wywoływane PO advance() w stepOnce().
+        // Dodaje segment na pozycji za obecnym końcem ogona,
+        // czyli tam, gdzie ogon był w poprzednim kroku.
         append()
     }
 
     func selfCollision() -> Bool {
-        // Sprawdzamy tylko głowę względem reszty ciała
         for part in parts.dropFirst() {
             if part.x == head.x, part.y == head.y {
                 return true
