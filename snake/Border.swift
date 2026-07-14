@@ -5,44 +5,31 @@ class Border {
         let xMax = SQUARE_COUNT * X_TO_Y_RATIO
         let yMax = SQUARE_COUNT
 
-        var initialBorderSquares: [BorderSquare] = []
+        var squares: [BorderSquare] = []
 
-        for x in 0...0 {
-            for y in 0..<SQUARE_COUNT {
-                let borderSquare = BorderSquare(x: x, y: y)
-
-                initialBorderSquares.append(borderSquare)
-            }
+        // Lewa ściana (x = 0)
+        for y in 0..<yMax {
+            squares.append(BorderSquare(x: 0, y: y))
         }
 
-        for x in xMax-1...xMax-1 {
-            for y in 0..<SQUARE_COUNT {
-                let borderSquare = BorderSquare(x: x, y: y)
-
-                initialBorderSquares.append(borderSquare)
-            }
+        // Prawa ściana (x = xMax - 1)
+        for y in 0..<yMax {
+            squares.append(BorderSquare(x: xMax - 1, y: y))
         }
 
-        for x in 0..<xMax - 1 {
-            for y in 0...0 {
-                let borderSquare = BorderSquare(x: x, y: y)
-
-                initialBorderSquares.append(borderSquare)
-            }
+        // Górna ściana (y = 0) — bez rogów (te już są z lewej i prawej)
+        for x in 1..<(xMax - 1) {
+            squares.append(BorderSquare(x: x, y: 0))
         }
 
-        for x in 0..<xMax - 1 {
-            for y in yMax-1...yMax-1 {
-                let borderSquare = BorderSquare(x: x, y: y)
-
-                initialBorderSquares.append(borderSquare)
-            }
+        // Dolna ściana (y = yMax - 1) — bez rogów
+        for x in 1..<(xMax - 1) {
+            squares.append(BorderSquare(x: x, y: yMax - 1))
         }
 
-        borderSquares = initialBorderSquares
+        borderSquares = squares
     }
 
-    // Returns true if the snake's head is on any border square
     func containsCollision(with snake: Snake) -> Bool {
         let hx = snake.head.x
         let hy = snake.head.y
