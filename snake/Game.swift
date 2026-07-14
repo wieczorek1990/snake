@@ -47,6 +47,7 @@ final class Game {
         for bs in border.borderSquares {
             if bs.x == nextHead.x && bs.y == nextHead.y {
                 running = false
+                filling.start(at: snake.head.x, y: snake.head.y)
                 return
             }
         }
@@ -54,6 +55,7 @@ final class Game {
         for part in snake.parts.dropLast() {
             if part.x == nextHead.x && part.y == nextHead.y {
                 running = false
+                filling.start(at: snake.head.x, y: snake.head.y)
                 return
             }
         }
@@ -64,5 +66,4 @@ final class Game {
             snake.grow()
             apple.respawn(avoiding: snake, within: border)
         }
-    }
-}
+    }}
