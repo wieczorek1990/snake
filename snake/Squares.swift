@@ -121,3 +121,5 @@ class SnakeTail: SnakePart {}
 class SnakeHead: SnakePart {}
 
 class BorderSquare: Square {}
+
+class FillingSquare: Square {}

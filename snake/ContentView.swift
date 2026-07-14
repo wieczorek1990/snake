@@ -13,10 +13,7 @@ struct ContentView: View {
     private let gameUpdateInterval: TimeInterval = 1.0 / 30.0
 
     init() {
-        let initialSnake = Snake()
-        let initialApple = Apple()
-        let initialBorder = Border()
-        _game = State(initialValue: Game(initialSnake, initialApple, initialBorder))
+        _game = State(initialValue: Game(Snake(), Apple(), Border()))
     }
 
     var body: some View {
@@ -40,7 +37,14 @@ struct ContentView: View {
         .onKeyPress(.downArrow) { game.setDirection(.down); return .handled }
         .onKeyPress(.leftArrow) { game.setDirection(.left); return .handled }
         .onKeyPress(.rightArrow) { game.setDirection(.right); return .handled }
-        .onKeyPress(.space) { game.running.toggle(); return .handled }
+        .onKeyPress(.space) {
+            if game.running {
+                game.running.toggle()
+            } else {
+                game = Game(Snake(), Apple(), Border())
+            }
+            return .handled
+        }
     }
 
     private func startGameLoop() {

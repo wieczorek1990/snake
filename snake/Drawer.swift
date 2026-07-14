@@ -7,6 +7,7 @@ class Drawer {
     let snakeBorderColor: Color = .black
     let appleColor: Color = .green
     let borderSquareColor: Color = .gray
+    let fillingSquareColor: Color = .brown
 
     let squareBorderLineWidth: CGFloat = 1.0
 
@@ -37,6 +38,15 @@ class Drawer {
                 size: size,
                 square: borderSquare,
                 color: borderSquareColor
+            )
+        }
+
+        for fillingSquare in game.filling.fillingSquares {
+            drawSquare(
+                context: context,
+                size: size,
+                square: fillingSquare,
+                color: fillingSquareColor
             )
         }
     }

@@ -8,11 +8,13 @@ final class Game {
     public var snake: Snake
     public var apple: Apple
     public var border: Border
+    public var filling: Filling
 
     init(_ snake: Snake, _ apple: Apple, _ border: Border) {
         self.snake = snake
         self.apple = apple
         self.border = border
+        self.filling = Filling()
     }
 
     func setDirection(_ direction: Direction) {
@@ -22,9 +24,13 @@ final class Game {
     }
 
     func run(deltaTime dt: TimeInterval) {
-        guard running else { return }
-
         let clampedDT = min(dt, 0.1)
+
+        if !running {
+            filling.update(deltaTime: clampedDT)
+            
+            return
+        }
 
         accumulator += clampedDT
         while accumulator >= fixedStep {
@@ -34,6 +40,8 @@ final class Game {
     }
 
     private func stepOnce() {
+        guard running else { return }
+
         let nextHead = Square.ahead(snake.head, snake.direction)
 
         for bs in border.borderSquares {

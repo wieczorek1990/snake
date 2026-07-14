@@ -1,5 +1,3 @@
-// ─── Snake.swift (ostateczna wersja) ───
-
 class Snake {
     var parts: [SnakePart]
     var head: SnakeHead { parts[0] as! SnakeHead }
